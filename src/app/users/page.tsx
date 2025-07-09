@@ -47,7 +47,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("/api/users")
+      const response = await fetch("https://book-worms-0hgk.onrender.com/api/users")
       const data = await response.json()
       setUsers(data)
     } catch {
@@ -59,7 +59,7 @@ export default function UsersPage() {
 
   const handleMarkPayment = async (userId: number) => {
     try {
-      const response = await fetch(`/api/users/${userId}/mark-payment`, {
+      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/users/${userId}/mark-payment`, {
         method: "POST",
       })
 

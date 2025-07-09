@@ -55,7 +55,7 @@ export default function TasksPage() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch("/api/tasks")
+      const response = await fetch("https://book-worms-0hgk.onrender.com/api/tasks")
       const data = await response.json()
       setTasks(data)
     } catch {
