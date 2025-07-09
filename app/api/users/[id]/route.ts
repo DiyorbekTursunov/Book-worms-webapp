@@ -6,7 +6,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const userId = Number.parseInt(params.id)
     await prisma.user.delete({ where: { id: userId } })
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Foydalanuvchini o'chirishda xatolik" }, { status: 500 })
   }
 }

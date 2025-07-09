@@ -7,7 +7,7 @@ export async function GET() {
       include: { tasks: { include: { task: true } } },
     })
     return NextResponse.json(users)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Foydalanuvchilarni olishda xatolik" }, { status: 500 })
   }
 }

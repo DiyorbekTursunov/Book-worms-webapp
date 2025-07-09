@@ -29,7 +29,7 @@ export default function TaskList({ tasks, onEditTask, onDeleteTask }: TaskListPr
                 className="bg-[var(--tg-theme-destructive-text-color)] text-[var(--tg-theme-button-text-color)] px-3 py-1 rounded hover:opacity-90"
                 onClick={() => onDeleteTask(task.id)}
               >
-                O'chirish
+                O&apos;chirish
               </button>
             </div>
           </div>

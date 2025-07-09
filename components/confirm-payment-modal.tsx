@@ -22,8 +22,8 @@ export default function ConfirmPaymentModal({
       <div className="bg-[var(--tg-theme-bg-color)] p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-lg font-semibold mb-4 text-[var(--tg-theme-section-header-text-color)]">Tasdiqlash</h2>
         <p className="mb-4">
-          Haqiqatan ham {userName} uchun to'lov holatini "{newPaymentStatus ? "to'langan" : "to'lanmagan"}" deb
-          o'zgartirmoqchimisiz?
+          Haqiqatan ham {userName} uchun to&apos;lov holatini &quot;{newPaymentStatus ? "to'langan" : "to'lanmagan"}&quot; deb
+          o&apos;zgartirmoqchimisiz?
         </p>
         <div className="flex justify-end space-x-2">
           <button

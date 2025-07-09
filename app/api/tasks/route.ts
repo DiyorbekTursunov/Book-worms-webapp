@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const tasks = await prisma.task.findMany({})
     return NextResponse.json(tasks)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Vazifalarni olishda xatolik" }, { status: 500 })
   }
 }
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json(task)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Vazifa yaratishda xatolik" }, { status: 500 })
   }
 }

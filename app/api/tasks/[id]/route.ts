@@ -41,7 +41,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     })
 
     return NextResponse.json(task)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Vazifani tahrirlashda xatolik" }, { status: 500 })
   }
 }
@@ -51,7 +51,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const taskId = Number.parseInt(params.id)
     await prisma.task.delete({ where: { id: taskId } })
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Vazifani o'chirishda xatolik" }, { status: 500 })
   }
 }

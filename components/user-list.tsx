@@ -28,8 +28,8 @@ export default function UserList({ users, onMarkPaid, onDeleteUser }: UserListPr
                   {user.name} (ID: {user.telegramId})
                 </p>
                 <p className="text-sm text-[var(--tg-theme-hint-color)]">
-                  Qo'shilgan: {new Date(user.joinedAt).toLocaleDateString()} | Davomiylik: {user.currentStreak} |
-                  Bajarilmagan: {user.tasks.filter((t) => !t.completed).length} | To'lanmagan jarimalar: {unpaidTasks}
+                  Qo&apos;shilgan: {new Date(user.joinedAt).toLocaleDateString()} | Davomiylik: {user.currentStreak} |
+                  Bajarilmagan: {user.tasks.filter((t) => !t.completed).length} | To&apos;lanmagan jarimalar: {unpaidTasks}
                 </p>
               </div>
               <div className="space-x-2">
@@ -37,20 +37,20 @@ export default function UserList({ users, onMarkPaid, onDeleteUser }: UserListPr
                   className="bg-[var(--tg-theme-button-color)] text-[var(--tg-theme-button-text-color)] px-3 py-1 rounded hover:opacity-90"
                   onClick={() => onMarkPaid(user.id, user.name, true)}
                 >
-                  To'lovni belgilash
+                  To&apos;lovni belgilash
                 </button>
                 <button
                   className="bg-[var(--tg-theme-destructive-text-color)] text-[var(--tg-theme-button-text-color)] px-3 py-1 rounded hover:opacity-90"
                   onClick={() => onDeleteUser(user.id)}
                 >
-                  O'chirish
+                  O&apos;chirish
                 </button>
               </div>
             </div>
           )
         })}
         {usersWithUnpaidTasks.length === 0 && (
-          <p className="text-center py-2 text-[var(--tg-theme-hint-color)]">To'lanmagan jarimalar mavjud emas</p>
+          <p className="text-center py-2 text-[var(--tg-theme-hint-color)]">To&apos;lanmagan jarimalar mavjud emas</p>
         )}
       </div>
     </div>
