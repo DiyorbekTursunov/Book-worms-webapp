@@ -67,7 +67,7 @@ export function Navigation() {
             {isOpen && (
               <>
                 {/* Backdrop */}
-                <div className="fixed inset-0 bg-black bg-opacity-25 z-40" onClick={() => setIsOpen(false)} />
+                <div className="fixed inset-0 bg-black bg-opacity-25 z-40 opacity-20" onClick={() => setIsOpen(false)} />
 
                 {/* Menu */}
                 <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border z-50">
