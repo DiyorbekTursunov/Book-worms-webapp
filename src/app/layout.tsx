@@ -1,15 +1,14 @@
-import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from 'next/font/google'
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Admin Panel - Vazifalar Boshqaruvi",
-  description: "Vazifalar boshqaruv tizimi uchun admin panel",
+  title: "Admin Panel - Task Management",
+  description: "Admin panel for task management system",
 }
 
 export default function RootLayout({
@@ -18,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="uz">
+    <html lang="en">
       <body className={inter.className}>
         <div className="min-h-screen bg-gray-50">
           <Navigation />
