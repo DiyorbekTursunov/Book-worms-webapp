@@ -76,7 +76,7 @@ export default function UsersPage() {
 
   const handleDeleteUser = async (userId: number) => {
     try {
-      const response = await fetch(`/api/users/${userId}`, {
+      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/users/${userId}`, {
         method: "DELETE",
       })
 

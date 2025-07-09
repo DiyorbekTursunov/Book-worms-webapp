@@ -69,7 +69,7 @@ export default function TasksPage() {
     e.preventDefault()
 
     try {
-      const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks"
+      const url = editingTask ? `https://book-worms-0hgk.onrender.com/api/tasks/${editingTask.id}` : "https://book-worms-0hgk.onrender.com/api/tasks"
       const method = editingTask ? "PUT" : "POST"
 
       const response = await fetch(url, {
@@ -95,7 +95,7 @@ export default function TasksPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`/api/tasks/${id}`, {
+      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/tasks/${id}`, {
         method: "DELETE",
       })
 
