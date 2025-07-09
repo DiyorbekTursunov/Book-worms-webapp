@@ -237,7 +237,7 @@ export default function TasksPage() {
                       <Button variant="outline" size="sm" onClick={() => openEditDialog(task)}>
                         <Edit className="h-3 w-3 md:h-4 md:w-4" />
                       </Button>
-                      <AlertDialog>
+                      {/* <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="outline" size="sm">
                             <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
@@ -257,7 +257,7 @@ export default function TasksPage() {
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
-                      </AlertDialog>
+                      </AlertDialog> */}
                     </div>
                   </div>
                 )
