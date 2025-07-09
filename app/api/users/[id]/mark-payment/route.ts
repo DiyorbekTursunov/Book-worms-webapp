@@ -1,9 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const userId = Number.parseInt(params.id)
+    const { id } = await context.params
+    const userId = Number.parseInt(id)
     const { penaltyPaid } = await request.json()
 
     await prisma.taskCompletion.updateMany({

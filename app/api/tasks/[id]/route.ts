@@ -1,9 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const taskId = Number.parseInt(params.id)
+    const { id } = await context.params
+    const taskId = Number.parseInt(id)
     const { description, scheduledDate } = await request.json()
 
     const selectedDate = new Date(scheduledDate)
@@ -46,9 +47,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const taskId = Number.parseInt(params.id)
+    const { id } = await context.params
+    const taskId = Number.parseInt(id)
     await prisma.task.delete({ where: { id: taskId } })
     return NextResponse.json({ success: true })
   } catch (error) {
