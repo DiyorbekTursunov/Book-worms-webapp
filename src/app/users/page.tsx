@@ -15,8 +15,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { toast } from "sonner"
-import { Users, CheckCircle, XCircle, DollarSign, Trash2 } from 'lucide-react'
+import { useToast } from "@/hooks/use-toast"
+import { Users, CheckCircle, XCircle, DollarSign, Trash2 } from "lucide-react"
 
 interface Task {
   id: number
@@ -40,6 +40,7 @@ interface User {
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
 
   useEffect(() => {
     fetchUsers()
@@ -47,11 +48,15 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://book-worms-0hgk.onrender.com/api/users")
+      const response = await fetch("/api/users")
       const data = await response.json()
       setUsers(data)
-    } catch (error) {
-      toast.error("Failed to fetch users")
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to fetch users",
+        variant: "destructive",
+      })
     } finally {
       setLoading(false)
     }
@@ -59,35 +64,57 @@ export default function UsersPage() {
 
   const handleMarkPayment = async (userId: number) => {
     try {
-      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/users/${userId}/mark-payment`, {
+      const response = await fetch(`/api/users/${userId}/mark-payment`, {
         method: "POST",
       })
 
       if (response.ok) {
-        toast.success("Payment marked successfully")
+        toast({
+          title: "Success",
+          description: "Payment marked successfully",
+        })
         fetchUsers()
       } else {
-        toast.error("Failed to mark payment")
+        toast({
+          title: "Error",
+          description: "Failed to mark payment",
+          variant: "destructive",
+        })
       }
-    } catch (error) {
-      toast.error("Failed to mark payment")
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to mark payment",
+        variant: "destructive",
+      })
     }
   }
 
   const handleDeleteUser = async (userId: number) => {
     try {
-      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/users/${userId}`, {
+      const response = await fetch(`/api/users/${userId}`, {
         method: "DELETE",
       })
 
       if (response.ok) {
-        toast.success("User deleted successfully")
+        toast({
+          title: "Success",
+          description: "User deleted successfully",
+        })
         fetchUsers()
       } else {
-        toast.error("Failed to delete user")
+        toast({
+          title: "Error",
+          description: "Failed to delete user",
+          variant: "destructive",
+        })
       }
-    } catch (error) {
-      toast.error("Failed to delete user")
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to delete user",
+        variant: "destructive",
+      })
     }
   }
 

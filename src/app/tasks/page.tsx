@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -28,8 +29,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { toast } from "sonner"
-import { Plus, Edit, Trash2, Calendar } from 'lucide-react'
+import { useToast } from "@/hooks/use-toast"
+import { Plus, Edit, Trash2, Calendar } from "lucide-react"
 
 interface Task {
   id: number
@@ -47,6 +48,7 @@ export default function TasksPage() {
     description: "",
     scheduledDate: "",
   })
+  const { toast } = useToast()
 
   useEffect(() => {
     fetchTasks()
@@ -54,11 +56,15 @@ export default function TasksPage() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch("https://book-worms-0hgk.onrender.com/api/tasks")
+      const response = await fetch("/api/tasks")
       const data = await response.json()
       setTasks(data)
-    } catch (error) {
-      toast.error("Failed to fetch tasks")
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to fetch tasks",
+        variant: "destructive",
+      })
     } finally {
       setLoading(false)
     }
@@ -68,7 +74,7 @@ export default function TasksPage() {
     e.preventDefault()
 
     try {
-      const url = editingTask ? `https://book-worms-0hgk.onrender.com/api/tasks/${editingTask.id}` : "https://book-worms-0hgk.onrender.com/api/tasks"
+      const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks"
       const method = editingTask ? "PUT" : "POST"
 
       const response = await fetch(url, {
@@ -80,32 +86,54 @@ export default function TasksPage() {
       })
 
       if (response.ok) {
-        toast.success(editingTask ? "Task updated successfully" : "Task created successfully")
+        toast({
+          title: "Success",
+          description: editingTask ? "Task updated successfully" : "Task created successfully",
+        })
         fetchTasks()
         resetForm()
       } else {
         const error = await response.json()
-        toast.error(error.error || "Failed to save task")
+        toast({
+          title: "Error",
+          description: error.error || "Failed to save task",
+          variant: "destructive",
+        })
       }
-    } catch (error) {
-      toast.error("Failed to save task")
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to save task",
+        variant: "destructive",
+      })
     }
   }
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/tasks/${id}`, {
+      const response = await fetch(`/api/tasks/${id}`, {
         method: "DELETE",
       })
 
       if (response.ok) {
-        toast.success("Task deleted successfully")
+        toast({
+          title: "Success",
+          description: "Task deleted successfully",
+        })
         fetchTasks()
       } else {
-        toast.error("Failed to delete task")
+        toast({
+          title: "Error",
+          description: "Failed to delete task",
+          variant: "destructive",
+        })
       }
-    } catch (error) {
-      toast.error("Failed to delete task")
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to delete task",
+        variant: "destructive",
+      })
     }
   }
 
