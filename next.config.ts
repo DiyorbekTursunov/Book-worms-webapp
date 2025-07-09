@@ -1,19 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disable telemetry
-  telemetry: false,
-
   // Enable experimental features if needed
   experimental: {
     // Add any experimental features here
   },
 
   eslint: {
+    // Don't run ESLint during builds in production
     ignoreDuringBuilds: true,
   },
 
   typescript: {
-    ignoreBuildErrors: true,
+    // Don't run TypeScript checks during builds in production
+    ignoreBuildErrors: false,
   },
 
   images: {
