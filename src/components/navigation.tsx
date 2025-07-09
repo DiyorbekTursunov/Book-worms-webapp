@@ -17,10 +17,10 @@ export function Navigation() {
   return (
     <nav className="bg-white shadow-sm border-b">
       <div className="container mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex flex-wrap justify-between items-center h-16">
           <div className="flex items-center">
             <Link href="/" className="text-xl font-bold text-gray-900">
-              Admin Panel
+              Worm books Admin Panel
             </Link>
           </div>
           <div className="flex space-x-8">
