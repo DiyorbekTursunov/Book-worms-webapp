@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { Users, CheckCircle, XCircle, DollarSign, Trash2 } from "lucide-react"
 
 interface Task {
@@ -40,7 +40,6 @@ interface User {
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
 
   useEffect(() => {
     fetchUsers()
@@ -52,11 +51,7 @@ export default function UsersPage() {
       const data = await response.json()
       setUsers(data)
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to fetch users",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch users")
     } finally {
       setLoading(false)
     }
@@ -69,24 +64,13 @@ export default function UsersPage() {
       })
 
       if (response.ok) {
-        toast({
-          title: "Success",
-          description: "Payment marked successfully",
-        })
+        toast.success("Payment marked successfully")
         fetchUsers()
       } else {
-        toast({
-          title: "Error",
-          description: "Failed to mark payment",
-          variant: "destructive",
-        })
+        toast.error("Failed to mark payment")
       }
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to mark payment",
-        variant: "destructive",
-      })
+      toast.error("Failed to mark payment")
     }
   }
 
@@ -97,24 +81,13 @@ export default function UsersPage() {
       })
 
       if (response.ok) {
-        toast({
-          title: "Success",
-          description: "User deleted successfully",
-        })
+        toast.success("User deleted successfully")
         fetchUsers()
       } else {
-        toast({
-          title: "Error",
-          description: "Failed to delete user",
-          variant: "destructive",
-        })
+        toast.error("Failed to delete user")
       }
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to delete user",
-        variant: "destructive",
-      })
+      toast.error("Failed to delete user")
     }
   }
 

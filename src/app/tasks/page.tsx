@@ -29,7 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { Plus, Edit, Trash2, Calendar } from "lucide-react"
 
 interface Task {
@@ -48,7 +48,6 @@ export default function TasksPage() {
     description: "",
     scheduledDate: "",
   })
-  const { toast } = useToast()
 
   useEffect(() => {
     fetchTasks()
@@ -60,11 +59,7 @@ export default function TasksPage() {
       const data = await response.json()
       setTasks(data)
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to fetch tasks",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch tasks")
     } finally {
       setLoading(false)
     }
@@ -86,26 +81,15 @@ export default function TasksPage() {
       })
 
       if (response.ok) {
-        toast({
-          title: "Success",
-          description: editingTask ? "Task updated successfully" : "Task created successfully",
-        })
+        toast.success(editingTask ? "Task updated successfully" : "Task created successfully")
         fetchTasks()
         resetForm()
       } else {
         const error = await response.json()
-        toast({
-          title: "Error",
-          description: error.error || "Failed to save task",
-          variant: "destructive",
-        })
+        toast.error(error.error || "Failed to save task")
       }
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to save task",
-        variant: "destructive",
-      })
+      toast.error("Failed to save task")
     }
   }
 
@@ -116,24 +100,13 @@ export default function TasksPage() {
       })
 
       if (response.ok) {
-        toast({
-          title: "Success",
-          description: "Task deleted successfully",
-        })
+        toast.success("Task deleted successfully")
         fetchTasks()
       } else {
-        toast({
-          title: "Error",
-          description: "Failed to delete task",
-          variant: "destructive",
-        })
+        toast.error("Failed to delete task")
       }
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to delete task",
-        variant: "destructive",
-      })
+      toast.error("Failed to delete task")
     }
   }
 
