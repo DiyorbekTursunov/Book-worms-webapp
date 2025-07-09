@@ -7,7 +7,7 @@ export async function GET() {
       orderBy: { scheduledDate: "desc" },
     })
     return NextResponse.json(tasks)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Vazifalarni olishda xatolik" }, { status: 500 })
   }
 }
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(task)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Vazifa yaratishda xatolik" }, { status: 500 })
   }
 }

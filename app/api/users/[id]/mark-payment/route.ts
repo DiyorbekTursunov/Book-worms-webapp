@@ -17,7 +17,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
     })
 
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "To'lovni belgilashda xatolik" }, { status: 500 })
   }
 }

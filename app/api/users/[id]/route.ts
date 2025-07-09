@@ -7,7 +7,7 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
     const userId = Number.parseInt(id)
     await prisma.user.delete({ where: { id: userId } })
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Foydalanuvchini o'chirishda xatolik" }, { status: 500 })
   }
 }

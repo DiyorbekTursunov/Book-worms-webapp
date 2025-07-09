@@ -45,7 +45,7 @@ export default function AddTaskForm({ onAddTask, tg }: AddTaskFormProps) {
   return (
     <div className="bg-[var(--tg-theme-section-bg-color)] shadow rounded-lg p-4 mb-6">
       <h2 className="text-lg font-semibold mb-4 text-[var(--tg-theme-section-header-text-color)]">
-        Yangi Vazifa Qo'shish
+        Yangi Vazifa Qo&apos;shish
       </h2>
       <form id="add-task-form" className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <input

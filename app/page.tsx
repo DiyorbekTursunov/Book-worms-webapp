@@ -43,10 +43,10 @@ export default function Home() {
           <div className="text-center p-8">
             <h1 className="text-2xl font-bold mb-4">Book Worms Admin Panel</h1>
             <p className="text-gray-600 mb-4">
-              Bu admin panel Telegram Web App sifatida ishlatish uchun mo'ljallangan.
+              Bu admin panel Telegram Web App sifatida ishlatish uchun mo&apos;ljallangan.
             </p>
             <p className="text-sm text-gray-500">
-              Agar siz buni brauzerda ko'rayotgan bo'lsangiz, Telegram bot orqali kirish kerak.
+              Agar siz buni brauzerda ko&apos;rayotgan bo&apos;lsangiz, Telegram bot orqali kirish kerak.
             </p>
           </div>
         </div>

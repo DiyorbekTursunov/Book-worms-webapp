@@ -56,7 +56,7 @@ export default function AdminPanel() {
       if (!response.ok) throw new Error("Vazifalarni yuklashda xatolik")
       const data = await response.json()
       setTasks(data)
-    } catch (err) {
+    } catch {
       showError("Vazifalarni yuklashda xatolik yuz berdi")
     }
   }, [])
@@ -67,7 +67,7 @@ export default function AdminPanel() {
       if (!response.ok) throw new Error("Foydalanuvchilarni yuklashda xatolik")
       const data = await response.json()
       setUsers(data)
-    } catch (err) {
+    } catch {
       showError("Foydalanuvchilarni yuklashda xatolik yuz berdi")
     }
   }, [])
@@ -122,8 +122,9 @@ export default function AdminPanel() {
 
       await fetchTasks()
       return true
-    } catch (err: any) {
-      showError(err.message)
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Noma'lum xatolik"
+      showError(message)
       return false
     }
   }
@@ -145,8 +146,9 @@ export default function AdminPanel() {
       if (tg) tg.MainButton.setText("Vazifa Qo'shish")
       await fetchTasks()
       return true
-    } catch (err: any) {
-      showError(err.message)
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Noma'lum xatolik"
+      showError(message)
       return false
     }
   }
@@ -161,7 +163,7 @@ export default function AdminPanel() {
 
       if (!response.ok) throw new Error("Vazifani o'chirishda xatolik")
       await fetchTasks()
-    } catch (err) {
+    } catch {
       showError("Vazifani o'chirishda xatolik yuz berdi")
     }
   }
@@ -176,7 +178,7 @@ export default function AdminPanel() {
 
       if (!response.ok) throw new Error("Foydalanuvchini o'chirishda xatolik")
       await fetchUsers()
-    } catch (err) {
+    } catch {
       showError("Foydalanuvchini o'chirishda xatolik yuz berdi")
     }
   }
@@ -192,7 +194,7 @@ export default function AdminPanel() {
       if (!response.ok) throw new Error("To'lovni belgilashda xatolik")
       setIsConfirmModalOpen(false)
       await fetchUsers()
-    } catch (err) {
+    } catch {
       showError("To'lovni belgilashda xatolik yuz berdi")
     }
   }
