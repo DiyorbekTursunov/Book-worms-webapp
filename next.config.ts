@@ -1,12 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    // Don't run ESLint during builds in production
     ignoreDuringBuilds: true,
   },
 
   typescript: {
-    // Don't fail the build on TypeScript errors
+    // This will allow the build to continue even if there are type errors
     ignoreBuildErrors: false,
   },
 
@@ -14,9 +13,9 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  // Ensure proper handling of API routes
-  async rewrites() {
-    return []
+  // Ensure proper API route handling
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client'],
   },
 }
 

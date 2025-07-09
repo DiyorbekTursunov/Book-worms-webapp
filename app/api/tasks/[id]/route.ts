@@ -1,11 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-type RouteContext = {
-  params: { id: string }
-}
-
-export async function PUT(request: NextRequest, { params }: RouteContext) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const taskId = Number.parseInt(params.id)
     const { description, scheduledDate } = await request.json()
@@ -50,7 +46,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteContext) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const taskId = Number.parseInt(params.id)
     await prisma.task.delete({ where: { id: taskId } })

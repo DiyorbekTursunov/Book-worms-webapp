@@ -1,11 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-type RouteContext = {
-  params: { id: string }
-}
-
-export async function POST(request: NextRequest, { params }: RouteContext) {
+export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const userId = Number.parseInt(params.id)
     const { penaltyPaid } = await request.json()
