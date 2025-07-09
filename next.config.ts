@@ -1,22 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+import type { NextConfig } from "next";
 
-  typescript: {
-    // This will allow the build to continue even if there are type errors
-    ignoreBuildErrors: false,
-  },
+const nextConfig: NextConfig = {
+  /* config options here */
+};
 
-  images: {
-    unoptimized: true,
-  },
-
-  // Ensure proper API route handling
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
-}
-
-export default nextConfig
+export default nextConfig;
