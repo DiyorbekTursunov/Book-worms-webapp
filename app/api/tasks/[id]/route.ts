@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+type RouteContext = {
+  params: { id: string }
+}
+
+export async function PUT(request: NextRequest, { params }: RouteContext) {
   try {
     const taskId = Number.parseInt(params.id)
     const { description, scheduledDate } = await request.json()
@@ -41,17 +45,17 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     })
 
     return NextResponse.json(task)
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Vazifani tahrirlashda xatolik" }, { status: 500 })
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: RouteContext) {
   try {
     const taskId = Number.parseInt(params.id)
     await prisma.task.delete({ where: { id: taskId } })
     return NextResponse.json({ success: true })
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Vazifani o'chirishda xatolik" }, { status: 500 })
   }
 }

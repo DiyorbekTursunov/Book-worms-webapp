@@ -1,16 +1,18 @@
-import { NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
 export async function GET() {
   try {
-    const tasks = await prisma.task.findMany({})
+    const tasks = await prisma.task.findMany({
+      orderBy: { scheduledDate: "desc" },
+    })
     return NextResponse.json(tasks)
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Vazifalarni olishda xatolik" }, { status: 500 })
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { description, scheduledDate } = await request.json()
 
@@ -47,7 +49,7 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json(task)
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Vazifa yaratishda xatolik" }, { status: 500 })
   }
 }

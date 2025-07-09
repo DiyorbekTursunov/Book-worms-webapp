@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+type RouteContext = {
+  params: { id: string }
+}
+
+export async function POST(request: NextRequest, { params }: RouteContext) {
   try {
     const userId = Number.parseInt(params.id)
     const { penaltyPaid } = await request.json()
@@ -16,7 +20,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     })
 
     return NextResponse.json({ success: true })
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "To'lovni belgilashda xatolik" }, { status: 500 })
   }
 }
