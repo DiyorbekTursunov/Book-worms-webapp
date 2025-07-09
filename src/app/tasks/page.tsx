@@ -30,7 +30,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from "sonner"
-import { Plus, Edit, Trash2, Calendar } from "lucide-react"
+import { Plus, Edit, Trash2, Calendar } from 'lucide-react'
+import { API_BASE_URL } from "@/lib/config"
 
 interface Task {
   id: number
@@ -55,11 +56,11 @@ export default function TasksPage() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch("https://book-worms-0hgk.onrender.com/api/tasks")
+      const response = await fetch(`${API_BASE_URL}/api/tasks`)
       const data = await response.json()
       setTasks(data)
     } catch {
-      toast.error("Failed to fetch tasks")
+      toast.error("Vazifalarni yuklashda xatolik")
     } finally {
       setLoading(false)
     }
@@ -69,7 +70,7 @@ export default function TasksPage() {
     e.preventDefault()
 
     try {
-      const url = editingTask ? `https://book-worms-0hgk.onrender.com/api/tasks/${editingTask.id}` : "https://book-worms-0hgk.onrender.com/api/tasks"
+      const url = editingTask ? `${API_BASE_URL}/api/tasks/${editingTask.id}` : `${API_BASE_URL}/api/tasks`
       const method = editingTask ? "PUT" : "POST"
 
       const response = await fetch(url, {
@@ -81,32 +82,32 @@ export default function TasksPage() {
       })
 
       if (response.ok) {
-        toast.success(editingTask ? "Task updated successfully" : "Task created successfully")
+        toast.success(editingTask ? "Vazifa muvaffaqiyatli yangilandi" : "Vazifa muvaffaqiyatli yaratildi")
         fetchTasks()
         resetForm()
       } else {
         const error = await response.json()
-        toast.error(error.error || "Failed to save task")
+        toast.error(error.error || "Vazifani saqlashda xatolik")
       }
     } catch {
-      toast.error("Failed to save task")
+      toast.error("Vazifani saqlashda xatolik")
     }
   }
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`https://book-worms-0hgk.onrender.com/api/tasks/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
         method: "DELETE",
       })
 
       if (response.ok) {
-        toast.success("Task deleted successfully")
+        toast.success("Vazifa muvaffaqiyatli o'chirildi")
         fetchTasks()
       } else {
-        toast.error("Failed to delete task")
+        toast.error("Vazifani o'chirishda xatolik")
       }
     } catch {
-      toast.error("Failed to delete task")
+      toast.error("Vazifani o'chirishda xatolik")
     }
   }
 
@@ -133,60 +134,68 @@ export default function TasksPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-gray-900"></div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-8">
+    <div className="container mx-auto p-3 md:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tasks Management</h1>
-          <p className="text-gray-600 mt-2">Manage scheduled tasks</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Vazifalar Boshqaruvi</h1>
+          <p className="text-sm md:text-base text-gray-600 mt-1 md:mt-2">Rejalashtirilgan vazifalarni boshqarish</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openCreateDialog}>
+            <Button onClick={openCreateDialog} className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              Add Task
+              Vazifa Qo'shish
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-[95vw] max-w-md mx-auto">
             <DialogHeader>
-              <DialogTitle>{editingTask ? "Edit Task" : "Create New Task"}</DialogTitle>
-              <DialogDescription>
-                {editingTask ? "Update the task details below." : "Fill in the details to create a new task."}
+              <DialogTitle className="text-lg md:text-xl">{editingTask ? "Vazifani Tahrirlash" : "Yangi Vazifa Yaratish"}</DialogTitle>
+              <DialogDescription className="text-sm">
+                {editingTask ? "Vazifa ma'lumotlarini yangilang." : "Yangi vazifa yaratish uchun ma'lumotlarni to'ldiring."}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description" className="text-sm font-medium">
+                    Tavsif
+                  </Label>
                   <Textarea
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Enter task description"
+                    placeholder="Vazifa tavsifini kiriting"
                     required
+                    className="min-h-[80px] text-sm"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="scheduledDate">Scheduled Date</Label>
+                  <Label htmlFor="scheduledDate" className="text-sm font-medium">
+                    Rejalashtirilgan Sana
+                  </Label>
                   <Input
                     id="scheduledDate"
                     type="date"
                     value={formData.scheduledDate}
                     onChange={(e) => setFormData({ ...formData, scheduledDate: e.target.value })}
                     required
+                    className="text-sm"
                   />
                 </div>
               </div>
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
+              <DialogFooter className="flex flex-col sm:flex-row gap-2">
+                <Button type="button" variant="outline" onClick={resetForm} className="w-full sm:w-auto bg-transparent">
+                  Bekor qilish
                 </Button>
-                <Button type="submit">{editingTask ? "Update Task" : "Create Task"}</Button>
+                <Button type="submit" className="w-full sm:w-auto">
+                  {editingTask ? "Vazifani Yangilash" : "Vazifa Yaratish"}
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -194,16 +203,16 @@ export default function TasksPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>All Tasks</CardTitle>
-          <CardDescription>Total: {tasks.length} tasks</CardDescription>
+        <CardHeader className="px-3 md:px-6 py-3 md:py-6">
+          <CardTitle className="text-base md:text-lg">Barcha Vazifalar</CardTitle>
+          <CardDescription className="text-sm">Jami: {tasks.length} ta vazifa</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+          <div className="space-y-3 md:space-y-4">
             {tasks.length === 0 ? (
               <div className="text-center py-8">
-                <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">No tasks found. Create your first task!</p>
+                <Calendar className="h-8 w-8 md:h-12 md:w-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500 text-sm md:text-base">Vazifalar topilmadi. Birinchi vazifangizni yarating!</p>
               </div>
             ) : (
               tasks.map((task) => {
@@ -212,36 +221,40 @@ export default function TasksPage() {
                 return (
                   <div
                     key={task.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 md:p-4 border rounded-lg hover:bg-gray-50 gap-3"
                   >
-                    <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{task.description}</h3>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                        <span>Scheduled: {new Date(task.scheduledDate).toLocaleDateString()}</span>
-                        <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-sm md:text-base text-gray-900 mb-1">{task.description}</h3>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs md:text-sm text-gray-500">
+                        <span>Rejalashtirilgan: {new Date(task.scheduledDate).toLocaleDateString('uz-UZ')}</span>
+                        <span>Yaratilgan: {new Date(task.createdAt).toLocaleDateString('uz-UZ')}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={isUpcoming ? "default" : "secondary"}>{isUpcoming ? "Upcoming" : "Past"}</Badge>
+                    <div className="flex items-center gap-2 self-start sm:self-center">
+                      <Badge variant={isUpcoming ? "default" : "secondary"} className="text-xs">
+                        {isUpcoming ? "Kelayotgan" : "O'tgan"}
+                      </Badge>
                       <Button variant="outline" size="sm" onClick={() => openEditDialog(task)}>
-                        <Edit className="h-4 w-4" />
+                        <Edit className="h-3 w-3 md:h-4 md:w-4" />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="outline" size="sm">
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="w-[95vw] max-w-md mx-auto">
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will permanently delete the task.
+                            <AlertDialogTitle className="text-lg">Ishonchingiz komilmi?</AlertDialogTitle>
+                            <AlertDialogDescription className="text-sm">
+                              Bu amalni bekor qilib bo'lmaydi. Bu vazifani butunlay o'chiradi.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(task.id)}>Delete</AlertDialogAction>
+                          <AlertDialogFooter className="flex flex-col sm:flex-row gap-2">
+                            <AlertDialogCancel className="w-full sm:w-auto">Bekor qilish</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(task.id)} className="w-full sm:w-auto">
+                              O'chirish
+                            </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>

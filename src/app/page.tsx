@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, Users, CheckCircle, AlertCircle } from 'lucide-react'
+import { CalendarDays, Users, CheckCircle, AlertCircle } from "lucide-react"
+import { API_BASE_URL } from "@/lib/config"
 
 interface Task {
   id: number
@@ -34,7 +35,10 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
-      const [tasksRes, usersRes] = await Promise.all([fetch("https://book-worms-0hgk.onrender.com/api/tasks"), fetch("https://book-worms-0hgk.onrender.com/api/users")])
+      const [tasksRes, usersRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/api/tasks`),
+        fetch(`${API_BASE_URL}/api/users`),
+      ])
 
       const tasksData = await tasksRes.json()
       const usersData = await usersRes.json()
@@ -42,7 +46,7 @@ export default function Dashboard() {
       setTasks(tasksData)
       setUsers(usersData)
     } catch (error) {
-      console.error("Error fetching data:", error)
+      console.error("Ma'lumotlarni yuklashda xatolik:", error)
     } finally {
       setLoading(false)
     }
@@ -68,118 +72,132 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-gray-900"></div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-gray-600 mt-2">Task Management System Overview</p>
+    <div className="container mx-auto p-3 md:p-6">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Admin Boshqaruv Paneli</h1>
+        <p className="text-sm md:text-base text-gray-600 mt-2">Vazifalar boshqaruv tizimi umumiy ko'rinishi</p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {/* Stats Cards - Mobile: 2 columns, Desktop: 4 columns */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
-            <CalendarDays className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
+            <CardTitle className="text-xs md:text-sm font-medium">Jami Vazifalar</CardTitle>
+            <CalendarDays className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{tasks.length}</div>
-            <p className="text-xs text-muted-foreground">{getUpcomingTasks().length} upcoming</p>
+          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+            <div className="text-lg md:text-2xl font-bold">{tasks.length}</div>
+            <p className="text-xs text-muted-foreground">{getUpcomingTasks().length} ta kelayotgan</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
+            <CardTitle className="text-xs md:text-sm font-medium">Jami Foydalanuvchilar</CardTitle>
+            <Users className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{users.length}</div>
-            <p className="text-xs text-muted-foreground">Active users</p>
+          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+            <div className="text-lg md:text-2xl font-bold">{users.length}</div>
+            <p className="text-xs text-muted-foreground">Faol foydalanuvchilar</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Completed Tasks</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
+            <CardTitle className="text-xs md:text-sm font-medium">Bajarilgan</CardTitle>
+            <CheckCircle className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{getCompletedTasksCount()}</div>
-            <p className="text-xs text-muted-foreground">Successfully completed</p>
+          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+            <div className="text-lg md:text-2xl font-bold">{getCompletedTasksCount()}</div>
+            <p className="text-xs text-muted-foreground">Muvaffaqiyatli bajarilgan</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Payments</CardTitle>
-            <AlertCircle className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
+            <CardTitle className="text-xs md:text-sm font-medium">Kutilayotgan</CardTitle>
+            <AlertCircle className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{getPendingPayments()}</div>
-            <p className="text-xs text-muted-foreground">Require attention</p>
+          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+            <div className="text-lg md:text-2xl font-bold">{getPendingPayments()}</div>
+            <p className="text-xs text-muted-foreground">E'tibor talab qiladi</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Tasks */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Recent Tasks - Mobile: Stack vertically, Desktop: Side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Recent Tasks</CardTitle>
-            <CardDescription>Latest scheduled tasks</CardDescription>
+          <CardHeader className="px-3 md:px-6 py-3 md:py-6">
+            <CardTitle className="text-base md:text-lg">So'nggi Vazifalar</CardTitle>
+            <CardDescription className="text-sm">Eng so'nggi rejalashtirilgan vazifalar</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+            <div className="space-y-3 md:space-y-4">
               {tasks.slice(0, 5).map((task) => (
-                <div key={task.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex-1">
-                    <p className="font-medium">{task.description}</p>
-                    <p className="text-sm text-gray-500">
-                      Scheduled: {new Date(task.scheduledDate).toLocaleDateString()}
+                <div
+                  key={task.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-2 md:p-3 border rounded-lg gap-2"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm md:text-base truncate">{task.description}</p>
+                    <p className="text-xs md:text-sm text-gray-500">
+                      {new Date(task.scheduledDate).toLocaleDateString("uz-UZ")}
                     </p>
                   </div>
-                  <Badge variant={new Date(task.scheduledDate) > new Date() ? "default" : "secondary"}>
-                    {new Date(task.scheduledDate) > new Date() ? "Upcoming" : "Past"}
+                  <Badge
+                    variant={new Date(task.scheduledDate) > new Date() ? "default" : "secondary"}
+                    className="text-xs self-start sm:self-center"
+                  >
+                    {new Date(task.scheduledDate) > new Date() ? "Kelayotgan" : "O'tgan"}
                   </Badge>
                 </div>
               ))}
+              {tasks.length === 0 && <p className="text-center text-gray-500 py-4 text-sm">Vazifalar topilmadi</p>}
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>User Activity</CardTitle>
-            <CardDescription>User task completion status</CardDescription>
+          <CardHeader className="px-3 md:px-6 py-3 md:py-6">
+            <CardTitle className="text-base md:text-lg">Foydalanuvchi Faolligi</CardTitle>
+            <CardDescription className="text-sm">Foydalanuvchilarning vazifa bajarish holati</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+            <div className="space-y-3 md:space-y-4">
               {users.slice(0, 5).map((user) => {
                 const completedTasks = user.tasks.filter((task) => task.completed).length
                 const totalTasks = user.tasks.length
 
                 return (
-                  <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium">{user.username}</p>
-                      <p className="text-sm text-gray-500">
-                        {completedTasks}/{totalTasks} tasks completed
+                  <div
+                    key={user.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-2 md:p-3 border rounded-lg gap-2"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm md:text-base truncate">{user.username}</p>
+                      <p className="text-xs md:text-sm text-gray-500">
+                        {completedTasks}/{totalTasks} vazifa bajarilgan
                       </p>
                     </div>
-                    <div className="text-right">
-                      <Badge variant={completedTasks === totalTasks ? "default" : "secondary"}>
-                        {totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%
-                      </Badge>
-                    </div>
+                    <Badge
+                      variant={completedTasks === totalTasks ? "default" : "secondary"}
+                      className="text-xs self-start sm:self-center"
+                    >
+                      {totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%
+                    </Badge>
                   </div>
                 )
               })}
+              {users.length === 0 && (
+                <p className="text-center text-gray-500 py-4 text-sm">Foydalanuvchilar topilmadi</p>
+              )}
             </div>
           </CardContent>
         </Card>
