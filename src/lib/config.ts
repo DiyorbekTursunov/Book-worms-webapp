@@ -1,1 +1,1 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://book-worms-0hgk.onrender.com'
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://bookwormsbot.duckdns.org'

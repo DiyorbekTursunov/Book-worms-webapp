@@ -13,15 +13,18 @@ interface Task {
   createdAt: string
 }
 
+interface TaskCompletion {
+  id: number
+  completed: boolean
+  penaltyPaid: boolean
+  penaltyAppliedAt: string | null // Jarima qo'llanilgan vaqt
+  task: Task
+}
+
 interface User {
   id: number
   username: string
-  tasks: Array<{
-    id: number
-    completed: boolean
-    penaltyPaid: boolean
-    task: Task
-  }>
+  tasks: TaskCompletion[]
 }
 
 export default function Dashboard() {
@@ -65,7 +68,12 @@ export default function Dashboard() {
 
   const getPendingPayments = () => {
     return users.reduce((total, user) => {
-      return total + user.tasks.filter((task) => !task.completed && !task.penaltyPaid).length
+      return (
+        total +
+        user.tasks.filter(
+          (task) => !task.completed && !task.penaltyPaid && task.penaltyAppliedAt !== null, // Faqat jarima qo'llanilgan tasklar
+        ).length
+      )
     }, 0)
   }
 

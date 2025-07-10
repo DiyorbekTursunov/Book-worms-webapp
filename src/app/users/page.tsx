@@ -29,6 +29,7 @@ interface TaskCompletion {
   id: number
   completed: boolean
   penaltyPaid: boolean
+  penaltyAppliedAt: string | null // Jarima qo'llanilgan vaqt
   task: Task
 }
 
@@ -94,7 +95,9 @@ export default function UsersPage() {
 
   const getUserStats = (user: User) => {
     const completedTasks = user.tasks.filter((task) => task.completed).length
-    const pendingPayments = user.tasks.filter((task) => !task.completed && !task.penaltyPaid).length
+    const pendingPayments = user.tasks.filter(
+      (task) => !task.completed && !task.penaltyPaid && task.penaltyAppliedAt !== null, // Faqat jarima qo'llanilgan tasklar
+    ).length
     const totalTasks = user.tasks.length
 
     return { completedTasks, pendingPayments, totalTasks }
@@ -227,12 +230,17 @@ export default function UsersPage() {
                             <Badge variant={taskCompletion.completed ? "default" : "secondary"} className="text-xs">
                               {taskCompletion.completed ? "Bajarilgan" : "Bajarilmagan"}
                             </Badge>
-                            {!taskCompletion.completed && (
+                            {!taskCompletion.completed && taskCompletion.penaltyAppliedAt && (
                               <Badge
                                 variant={taskCompletion.penaltyPaid ? "default" : "destructive"}
                                 className="text-xs"
                               >
                                 {taskCompletion.penaltyPaid ? "To'langan" : "To'lanmagan"}
+                              </Badge>
+                            )}
+                            {!taskCompletion.completed && !taskCompletion.penaltyAppliedAt && (
+                              <Badge variant="outline" className="text-xs">
+                                Kutilmoqda
                               </Badge>
                             )}
                           </div>
