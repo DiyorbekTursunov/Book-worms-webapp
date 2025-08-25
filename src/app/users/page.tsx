@@ -127,7 +127,7 @@ export default function UsersPage() {
               <CardContent className="text-center py-12">
                 <Users className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Foydalanuvchilar topilmadi</h3>
-                <p className="text-gray-500 text-sm">Hozircha hech qanday foydalanuvchi yo'q.</p>
+                <p className="text-gray-500 text-sm">Hozircha hech qanday foydalanuvchi yo&apos;q.</p>
               </CardContent>
             </Card>
           ) : (
@@ -170,7 +170,7 @@ export default function UsersPage() {
                             className="flex-1 sm:flex-none text-xs hover:bg-green-50 hover:border-green-200"
                           >
                             <Users className="h-4 w-4 mr-1" />
-                            To'lov ({pendingPayments})
+                            To&apos;lov ({pendingPayments})
                           </Button>
                         )}
                         <AlertDialog>
@@ -185,10 +185,10 @@ export default function UsersPage() {
                           </AlertDialogTrigger>
                           <AlertDialogContent className="w-[95vw] max-w-md mx-auto">
                             <AlertDialogHeader>
-                              <AlertDialogTitle className="text-lg">Foydalanuvchini o'chirish</AlertDialogTitle>
+                              <AlertDialogTitle className="text-lg">Foydalanuvchini o&apos;chirish</AlertDialogTitle>
                               <AlertDialogDescription className="text-sm text-gray-600">
-                                {user.username} foydalanuvchisini o'chirishni xohlaysizmi? Bu amalni bekor qilib
-                                bo'lmaydi.
+                                {user.username} foydalanuvchisini o&apos;chirishni xohlaysizmi? Bu amalni bekor qilib
+                                bo&apos;lmaydi.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter className="flex flex-col-reverse sm:flex-row gap-2">
@@ -197,7 +197,7 @@ export default function UsersPage() {
                                 onClick={() => handleDeleteUser(user.id)}
                                 className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
                               >
-                                O'chirish
+                                O&apos;chirish
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>

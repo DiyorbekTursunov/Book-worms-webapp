@@ -146,7 +146,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent className="px-4 pb-4">
               <div className="text-2xl sm:text-3xl font-bold text-gray-900">{getPendingPayments()}</div>
-              <p className="text-xs sm:text-sm text-orange-600 font-medium mt-1">E'tibor kerak</p>
+              <p className="text-xs sm:text-sm text-orange-600 font-medium mt-1">E&apos;tibor kerak</p>
             </CardContent>
           </Card>
         </div>
@@ -154,9 +154,9 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <Card className="shadow-sm">
             <CardHeader className="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100">
-              <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900">So'nggi Vazifalar</CardTitle>
+              <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900">So&apos;nggi Vazifalar</CardTitle>
               <CardDescription className="text-sm text-gray-600">
-                Eng so'nggi rejalashtirilgan vazifalar
+                Eng so&apos;nggi rejalashtirilgan vazifalar
               </CardDescription>
             </CardHeader>
             <CardContent className="px-4 py-4 sm:px-6 sm:py-5">

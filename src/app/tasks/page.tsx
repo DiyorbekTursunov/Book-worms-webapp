@@ -150,7 +150,7 @@ export default function TasksPage() {
           <DialogTrigger asChild>
             <Button onClick={openCreateDialog} className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              Vazifa Qo'shish
+              Vazifa Qo&apos;shish
             </Button>
           </DialogTrigger>
           <DialogContent className="w-[95vw] max-w-md mx-auto">
@@ -247,13 +247,13 @@ export default function TasksPage() {
                           <AlertDialogHeader>
                             <AlertDialogTitle className="text-lg">Ishonchingiz komilmi?</AlertDialogTitle>
                             <AlertDialogDescription className="text-sm">
-                              Bu amalni bekor qilib bo'lmaydi. Bu vazifani butunlay o'chiradi.
+                              Bu amalni bekor qilib bo&apos;lmaydi. Bu vazifani butunlay o&apos;chiradi.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter className="flex flex-col sm:flex-row gap-2">
                             <AlertDialogCancel className="w-full sm:w-auto">Bekor qilish</AlertDialogCancel>
                             <AlertDialogAction onClick={() => handleDelete(task.id)} className="w-full sm:w-auto">
-                              O'chirish
+                              O&apos;chirish
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
