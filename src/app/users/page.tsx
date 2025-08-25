@@ -16,7 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from "sonner"
-import { Users, CheckCircle, XCircle, DollarSign, Trash2 } from "lucide-react"
+import { Users, CheckCircle, XCircle, Trash2, TrendingUp } from "lucide-react"
 import { API_BASE_URL } from "@/lib/config"
 
 interface Task {
@@ -33,14 +33,14 @@ interface TaskCompletion {
   task: Task
 }
 
-interface User {
+interface AppUser {
   id: number
   username: string
   tasks: TaskCompletion[]
 }
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<AppUser[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function UsersPage() {
     }
   }
 
-  const getUserStats = (user: User) => {
+  const getUserStats = (user: AppUser) => {
     const completedTasks = user.tasks.filter((task) => task.completed).length
     const pendingPayments = user.tasks.filter(
       (task) => !task.completed && !task.penaltyPaid && task.penaltyAppliedAt !== null, // Faqat jarima qo'llanilgan tasklar
@@ -106,153 +106,193 @@ export default function UsersPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto p-3 md:p-6">
-      <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Foydalanuvchilar Boshqaruvi</h1>
-        <p className="text-sm md:text-base text-gray-600 mt-1 md:mt-2">
-          Foydalanuvchilar va ularning vazifa bajarish holatini boshqarish
-        </p>
+    <div className="min-h-screen bg-gray-50/50">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Foydalanuvchilar</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Foydalanuvchilar va vazifa bajarish holati</p>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:gap-6">
-        {users.length === 0 ? (
-          <Card>
-            <CardContent className="text-center py-8">
-              <Users className="h-8 w-8 md:h-12 md:w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500 text-sm md:text-base">Foydalanuvchilar topilmadi.</p>
-            </CardContent>
-          </Card>
-        ) : (
-          users.map((user) => {
-            const { completedTasks, pendingPayments, totalTasks } = getUserStats(user)
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        <div className="space-y-4 sm:space-y-6">
+          {users.length === 0 ? (
+            <Card className="shadow-sm">
+              <CardContent className="text-center py-12">
+                <Users className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Foydalanuvchilar topilmadi</h3>
+                <p className="text-gray-500 text-sm">Hozircha hech qanday foydalanuvchi yo'q.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            users.map((user) => {
+              const { completedTasks, pendingPayments, totalTasks } = getUserStats(user)
+              const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
 
-            return (
-              <Card key={user.id}>
-                <CardHeader className="px-3 md:px-6 py-3 md:py-6">
-                  <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
-                    <div className="min-w-0 flex-1">
-                      <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                        <Users className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-                        <span className="truncate">{user.username}</span>
-                      </CardTitle>
-                      <CardDescription className="text-sm">Foydalanuvchi ID: {user.id}</CardDescription>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                      {pendingPayments > 0 && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleMarkPayment(user.id)}
-                          className="w-full sm:w-auto text-xs"
-                        >
-                          <DollarSign className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                          To'lovni Belgilash
-                        </Button>
-                      )}
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="w-full sm:w-auto bg-transparent">
-                            <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="w-[95vw] max-w-md mx-auto">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className="text-lg">Foydalanuvchini O'chirish</AlertDialogTitle>
-                            <AlertDialogDescription className="text-sm">
-                              {user.username} foydalanuvchisini o'chirishni xohlaysizmi? Bu amalni bekor qilib
-                              bo'lmaydi.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter className="flex flex-col sm:flex-row gap-2">
-                            <AlertDialogCancel className="w-full sm:w-auto">Bekor qilish</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteUser(user.id)} className="w-full sm:w-auto">
-                              O'chirish
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-                  {/* User Stats - Mobile: Stack vertically, Desktop: 3 columns */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
-                    <div className="flex items-center gap-2 p-2 md:p-3 bg-green-50 rounded-lg">
-                      <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600 flex-shrink-0" />
-                      <div className="min-w-0">
-                        <p className="text-xs md:text-sm text-green-600">Bajarilgan</p>
-                        <p className="font-semibold text-sm md:text-base text-green-800">{completedTasks}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 md:p-3 bg-red-50 rounded-lg">
-                      <XCircle className="h-4 w-4 md:h-5 md:w-5 text-red-600 flex-shrink-0" />
-                      <div className="min-w-0">
-                        <p className="text-xs md:text-sm text-red-600">Kutilayotgan To'lovlar</p>
-                        <p className="font-semibold text-sm md:text-base text-red-800">{pendingPayments}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 md:p-3 bg-blue-50 rounded-lg">
-                      <Users className="h-4 w-4 md:h-5 md:w-5 text-blue-600 flex-shrink-0" />
-                      <div className="min-w-0">
-                        <p className="text-xs md:text-sm text-blue-600">Jami Vazifalar</p>
-                        <p className="font-semibold text-sm md:text-base text-blue-800">{totalTasks}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Task List */}
-                  <div className="space-y-3">
-                    <h4 className="font-medium text-sm md:text-base text-gray-900">Vazifalar Tarixi</h4>
-                    {user.tasks.length === 0 ? (
-                      <p className="text-gray-500 text-xs md:text-sm">Vazifalar tayinlanmagan</p>
-                    ) : (
-                      user.tasks.map((taskCompletion) => (
-                        <div
-                          key={taskCompletion.id}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between p-2 md:p-3 border rounded-lg gap-2"
-                        >
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm md:text-base truncate">
-                              {taskCompletion.task.description}
-                            </p>
-                            <p className="text-xs md:text-sm text-gray-500">
-                              Rejalashtirilgan:{" "}
-                              {new Date(taskCompletion.task.scheduledDate).toLocaleDateString("uz-UZ")}
-                            </p>
-                          </div>
-                          <div className="flex flex-wrap gap-1 md:gap-2">
-                            <Badge variant={taskCompletion.completed ? "default" : "secondary"} className="text-xs">
-                              {taskCompletion.completed ? "Bajarilgan" : "Bajarilmagan"}
-                            </Badge>
-                            {!taskCompletion.completed && taskCompletion.penaltyAppliedAt && (
-                              <Badge
-                                variant={taskCompletion.penaltyPaid ? "default" : "destructive"}
-                                className="text-xs"
-                              >
-                                {taskCompletion.penaltyPaid ? "To'langan" : "To'lanmagan"}
-                              </Badge>
-                            )}
-                            {!taskCompletion.completed && !taskCompletion.penaltyAppliedAt && (
-                              <Badge variant="outline" className="text-xs">
-                                Kutilmoqda
-                              </Badge>
-                            )}
+              return (
+                <Card key={user.id} className="shadow-sm hover:shadow-md transition-shadow">
+                  <CardHeader className="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100">
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                      <div className="flex items-start gap-3 min-w-0 flex-1">
+                        <div className="p-2 bg-blue-50 rounded-lg shrink-0">
+                          <Users className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900 truncate">
+                            {user.username}
+                          </CardTitle>
+                          <CardDescription className="text-sm text-gray-600 mt-1">
+                            ID: {user.id} • {totalTasks} ta vazifa
+                          </CardDescription>
+                          <div className="flex items-center gap-2 mt-2">
+                            <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-32">
+                              <div
+                                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${completionRate}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-600 font-medium">{completionRate}%</span>
                           </div>
                         </div>
-                      ))
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })
-        )}
+                      </div>
+                      <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto">
+                        {(
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleMarkPayment(user.id)}
+                            className="flex-1 sm:flex-none text-xs hover:bg-green-50 hover:border-green-200"
+                          >
+                            <Users className="h-4 w-4 mr-1" />
+                            To'lov ({pendingPayments})
+                          </Button>
+                        )}
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 sm:flex-none hover:bg-red-50 hover:border-red-200 bg-transparent"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="w-[95vw] max-w-md mx-auto">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="text-lg">Foydalanuvchini o'chirish</AlertDialogTitle>
+                              <AlertDialogDescription className="text-sm text-gray-600">
+                                {user.username} foydalanuvchisini o'chirishni xohlaysizmi? Bu amalni bekor qilib
+                                bo'lmaydi.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter className="flex flex-col-reverse sm:flex-row gap-2">
+                              <AlertDialogCancel className="w-full sm:w-auto">Bekor qilish</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeleteUser(user.id)}
+                                className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
+                              >
+                                O'chirish
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="px-4 py-4 sm:px-6 sm:py-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                      <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                        <div className="p-2 bg-green-100 rounded-lg">
+                          <CheckCircle className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-green-800">Bajarilgan</p>
+                          <p className="text-xl font-bold text-green-900">{completedTasks}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
+                        <div className="p-2 bg-red-100 rounded-lg">
+                          <XCircle className="h-5 w-5 text-red-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-red-800">Kutilayotgan</p>
+                          <p className="text-xl font-bold text-red-900">{pendingPayments}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <TrendingUp className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-blue-800">Jami</p>
+                          <p className="text-xl font-bold text-blue-900">{totalTasks}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-base text-gray-900 flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        Vazifalar Tarixi
+                      </h4>
+                      {user.tasks.length === 0 ? (
+                        <div className="text-center py-6 bg-gray-50 rounded-lg">
+                          <p className="text-gray-500 text-sm">Vazifalar tayinlanmagan</p>
+                        </div>
+                      ) : (
+                        user.tasks.map((taskCompletion) => (
+                          <div
+                            key={taskCompletion.id}
+                            className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm sm:text-base text-gray-900 line-clamp-2 leading-relaxed">
+                                  {taskCompletion.task.description}
+                                </p>
+                                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                                  Rejalashtirilgan:{" "}
+                                  {new Date(taskCompletion.task.scheduledDate).toLocaleDateString("uz-UZ")}
+                                </p>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                <Badge
+                                  variant={taskCompletion.completed ? "default" : "secondary"}
+                                  className={`text-xs ${taskCompletion.completed ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"}`}
+                                >
+                                  {taskCompletion.completed ? "Bajarilgan" : "Bajarilmagan"}
+                                </Badge>
+                                {!taskCompletion.completed && taskCompletion.penaltyAppliedAt && (
+                                  <Badge
+                                    variant={taskCompletion.penaltyPaid ? "default" : "destructive"}
+                                    className={`text-xs ${taskCompletion.penaltyPaid ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"}`}
+                                  >
+                                    {taskCompletion.penaltyPaid ? "To'langan" : "To'lanmagan"}
+                                  </Badge>
+                                )}
+                                {!taskCompletion.completed && !taskCompletion.penaltyAppliedAt && (
+                                  <Badge variant="outline" className="text-xs border-orange-200 text-orange-600">
+                                    Kutilmoqda
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })
+          )}
+        </div>
       </div>
     </div>
   )

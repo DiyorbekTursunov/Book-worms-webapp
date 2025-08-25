@@ -80,135 +80,168 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto p-3 md:p-6">
-      <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Admin Boshqaruv Paneli</h1>
-        <p className="text-sm md:text-base text-gray-600 mt-2">Vazifalar boshqaruv tizimi umumiy ko'rinishi</p>
+    <div className="min-h-screen bg-gray-50/50">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Admin Panel</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Vazifalar boshqaruv tizimi</p>
+        </div>
       </div>
 
-      {/* Stats Cards - Mobile: 2 columns, Desktop: 4 columns */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
-            <CardTitle className="text-xs md:text-sm font-medium">Jami Vazifalar</CardTitle>
-            <CalendarDays className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-            <div className="text-lg md:text-2xl font-bold">{tasks.length}</div>
-            <p className="text-xs text-muted-foreground">{getUpcomingTasks().length} ta kelayotgan</p>
-          </CardContent>
-        </Card>
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6">
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-4 pt-4">
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Jami Vazifalar</CardTitle>
+              <div className="p-2 bg-blue-50 rounded-lg">
+                <CalendarDays className="h-4 w-4 text-blue-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">{tasks.length}</div>
+              <p className="text-xs sm:text-sm text-green-600 font-medium mt-1">
+                +{getUpcomingTasks().length} kelayotgan
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
-            <CardTitle className="text-xs md:text-sm font-medium">Jami Foydalanuvchilar</CardTitle>
-            <Users className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-            <div className="text-lg md:text-2xl font-bold">{users.length}</div>
-            <p className="text-xs text-muted-foreground">Faol foydalanuvchilar</p>
-          </CardContent>
-        </Card>
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-4 pt-4">
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Foydalanuvchilar</CardTitle>
+              <div className="p-2 bg-green-50 rounded-lg">
+                <Users className="h-4 w-4 text-green-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">{users.length}</div>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">Faol</p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
-            <CardTitle className="text-xs md:text-sm font-medium">Bajarilgan</CardTitle>
-            <CheckCircle className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-            <div className="text-lg md:text-2xl font-bold">{getCompletedTasksCount()}</div>
-            <p className="text-xs text-muted-foreground">Muvaffaqiyatli bajarilgan</p>
-          </CardContent>
-        </Card>
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-4 pt-4">
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Bajarilgan</CardTitle>
+              <div className="p-2 bg-emerald-50 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-emerald-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">{getCompletedTasksCount()}</div>
+              <p className="text-xs sm:text-sm text-emerald-600 font-medium mt-1">Muvaffaqiyatli</p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-3 md:px-6 pt-3 md:pt-6">
-            <CardTitle className="text-xs md:text-sm font-medium">Kutilayotgan</CardTitle>
-            <AlertCircle className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-            <div className="text-lg md:text-2xl font-bold">{getPendingPayments()}</div>
-            <p className="text-xs text-muted-foreground">E'tibor talab qiladi</p>
-          </CardContent>
-        </Card>
-      </div>
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 px-4 pt-4">
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Kutilayotgan</CardTitle>
+              <div className="p-2 bg-orange-50 rounded-lg">
+                <AlertCircle className="h-4 w-4 text-orange-600" />
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">{getPendingPayments()}</div>
+              <p className="text-xs sm:text-sm text-orange-600 font-medium mt-1">E'tibor kerak</p>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Recent Tasks - Mobile: Stack vertically, Desktop: Side by side */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        <Card>
-          <CardHeader className="px-3 md:px-6 py-3 md:py-6">
-            <CardTitle className="text-base md:text-lg">So'nggi Vazifalar</CardTitle>
-            <CardDescription className="text-sm">Eng so'nggi rejalashtirilgan vazifalar</CardDescription>
-          </CardHeader>
-          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-            <div className="space-y-3 md:space-y-4">
-              {tasks.slice(0, 5).map((task) => (
-                <div
-                  key={task.id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between p-2 md:p-3 border rounded-lg gap-2"
-                >
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm md:text-base truncate">{task.description}</p>
-                    <p className="text-xs md:text-sm text-gray-500">
-                      {new Date(task.scheduledDate).toLocaleDateString("uz-UZ")}
-                    </p>
-                  </div>
-                  <Badge
-                    variant={new Date(task.scheduledDate) > new Date() ? "default" : "secondary"}
-                    className="text-xs self-start sm:self-center"
-                  >
-                    {new Date(task.scheduledDate) > new Date() ? "Kelayotgan" : "O'tgan"}
-                  </Badge>
-                </div>
-              ))}
-              {tasks.length === 0 && <p className="text-center text-gray-500 py-4 text-sm">Vazifalar topilmadi</p>}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="px-3 md:px-6 py-3 md:py-6">
-            <CardTitle className="text-base md:text-lg">Foydalanuvchi Faolligi</CardTitle>
-            <CardDescription className="text-sm">Foydalanuvchilarning vazifa bajarish holati</CardDescription>
-          </CardHeader>
-          <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-            <div className="space-y-3 md:space-y-4">
-              {users.slice(0, 5).map((user) => {
-                const completedTasks = user.tasks.filter((task) => task.completed).length
-                const totalTasks = user.tasks.length
-
-                return (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <Card className="shadow-sm">
+            <CardHeader className="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100">
+              <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900">So'nggi Vazifalar</CardTitle>
+              <CardDescription className="text-sm text-gray-600">
+                Eng so'nggi rejalashtirilgan vazifalar
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-4 py-4 sm:px-6 sm:py-5">
+              <div className="space-y-3">
+                {tasks.slice(0, 5).map((task) => (
                   <div
-                    key={user.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between p-2 md:p-3 border rounded-lg gap-2"
+                    key={task.id}
+                    className="flex items-start justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm md:text-base truncate">{user.username}</p>
-                      <p className="text-xs md:text-sm text-gray-500">
-                        {completedTasks}/{totalTasks} vazifa bajarilgan
+                    <div className="flex-1 min-w-0 pr-3">
+                      <p className="font-medium text-sm sm:text-base text-gray-900 line-clamp-2 leading-relaxed">
+                        {task.description}
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                        {new Date(task.scheduledDate).toLocaleDateString("uz-UZ")}
                       </p>
                     </div>
                     <Badge
-                      variant={completedTasks === totalTasks ? "default" : "secondary"}
-                      className="text-xs self-start sm:self-center"
+                      variant={new Date(task.scheduledDate) > new Date() ? "default" : "secondary"}
+                      className="text-xs shrink-0"
                     >
-                      {totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%
+                      {new Date(task.scheduledDate) > new Date() ? "Kelayotgan" : "O'tgan"}
                     </Badge>
                   </div>
-                )
-              })}
-              {users.length === 0 && (
-                <p className="text-center text-gray-500 py-4 text-sm">Foydalanuvchilar topilmadi</p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                ))}
+                {tasks.length === 0 && (
+                  <div className="text-center py-8">
+                    <CalendarDays className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-500 text-sm">Vazifalar topilmadi</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-sm">
+            <CardHeader className="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-100">
+              <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900">Foydalanuvchi Faolligi</CardTitle>
+              <CardDescription className="text-sm text-gray-600">Vazifa bajarish holati</CardDescription>
+            </CardHeader>
+            <CardContent className="px-4 py-4 sm:px-6 sm:py-5">
+              <div className="space-y-3">
+                {users.slice(0, 5).map((user) => {
+                  const completedTasks = user.tasks.filter((task) => task.completed).length
+                  const totalTasks = user.tasks.length
+                  const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+
+                  return (
+                    <div
+                      key={user.id}
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <div className="flex-1 min-w-0 pr-3">
+                        <p className="font-medium text-sm sm:text-base text-gray-900 truncate">{user.username}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className="flex-1 bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-gray-500 shrink-0">
+                            {completedTasks}/{totalTasks}
+                          </span>
+                        </div>
+                      </div>
+                      <Badge
+                        variant={percentage === 100 ? "default" : percentage > 50 ? "secondary" : "outline"}
+                        className="text-xs shrink-0"
+                      >
+                        {percentage}%
+                      </Badge>
+                    </div>
+                  )
+                })}
+                {users.length === 0 && (
+                  <div className="text-center py-8">
+                    <Users className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-500 text-sm">Foydalanuvchilar topilmadi</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
