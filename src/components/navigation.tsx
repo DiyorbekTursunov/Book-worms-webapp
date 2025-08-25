@@ -17,6 +17,10 @@ export function Navigation() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
+    if(pathname === "/dashboard"){
+        return
+    }
+
   const NavItems = ({ mobile = false, onItemClick }: { mobile?: boolean; onItemClick?: () => void }) => (
     <>
       {navigation.map((item) => {
